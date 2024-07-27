@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overlay Mines Placard 2024</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 200vh; /* Aumentando a altura da página */
+  }
+
+  .fixed-top {
+    width: 100%;
+    background-color: #1976D2; /* Azul principal */
+    z-index: 9999;
+    padding: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    text-align: center;
+  }
+
+  .logo {
+    max-width: 200px;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(5, 50px);
+    grid-gap: 5px;
+    margin-top: 20px;
+    border: 2px solid #0D47A1; /* Azul escuro para borda */
+    padding: 10px;
+    background-color: #2196F3; /* Azul claro para fundo do tabuleiro */
+    border-radius: 5px;
+  }
+
+  .cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    background-color: #1976D2; /* Azul principal */
+    color: white; /* Texto em branco */
+    cursor: pointer;
+    border: 1px solid #0D47A1; /* Azul escuro para borda */
+    height: 50px;
+  }
+
+  .cell.revealed {
+    background-color: #0D47A1; /* Azul escuro para célula revelada */
+    color: #1976D2; /* Azul principal para texto da célula revelada */
+  }
+
+  .button-container {
+    margin-top: 20px;
+  }
+
+  button {
+    margin: 0 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0D47A1; /* Azul escuro para botão */
+    color: white; /* Texto em branco */
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 4px #1565C0; /* Sombra para efeito 3D */
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  button:hover {
+    background-color: #1565C0; /* Alteração de cor no hover */
+    box-shadow: 0 2px #1565C0;
+  }
+
+  .aposta-recomendada {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 18px;
+    color: #2196F3; /* Azul claro para a aposta recomendada */
+    border: 2px solid #0D47A1; /* Azul escuro para borda */
+    background-color: #0D47A1; /* Azul escuro para fundo */
+    border-radius: 5px;
+  }
+
+  .aposta-recomendada h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #2196F3; /* Azul claro para o título */
+  }
+
+  .aposta-recomendada p {
+    margin-top: 10px;
+    color: #fff; /* Texto branco */
+  }
+
+  .expiration {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #2196F3; /* Azul claro para o texto de validade */
+  }
+
+  .try-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #2196F3; /* Azul claro para a mensagem de tentativas */
+  }
+
+  .scroll-down {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #0D47A1; /* Azul escuro */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px #1565C0; /* Sombra para efeito 3D */
+  }
+
+  .scroll-down:hover {
+    background-color: #1565C0; /* Alteração de cor no hover */
+    box-shadow: 0 2px #1565C0;
+  }
+
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  iframe {
+    flex: 1;
+    width: 100%;
+    border: none;
+    height: 100vh; /* Altura total da tela */
+  }
+
+  .warning {
+    width: 100%;
+    background-color: red; /* Cor de fundo vermelho */
+    color: white; /* Texto branco */
+    text-align: center;
+    padding: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+<div class="warning">⚠️ AVISO⚠️ PARA ESSE PREDICTOR FUNCIONAR 100% CRIE UMA CONTA NOVA AQUI PARA GARANTIR FUNCIONAMENTO SATISFATÓRIO WHATSAPP 867969698 EM CASO DE DUVIDAS</div>
+
+<div class="fixed-top">
+  <div>
+    <h1>Mines <span style="color: red;">Placard</span> 2024</h1>
+    <div class="board" id="board">
+      <!-- Tabuleiro é gerado dinamicamente pelo JavaScript -->
+    </div>
+    <div class="expiration">Tempo de validade: 5 Min</div>
+    <div class="try-info" id="try-info">Tentativas realizadas: 0</div>
+    <div class="button-container">
+      <button onclick="generateBoard()">GERAR SINAIS</button>
+    </div>
+    <div class="aposta-recomendada" id="aposta-recomendada">
+      <h2>Recomendações de Apostas</h2>
+      <p id="apostas-recomendadas">--</p>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <iframe src="https://media1.placard.co.mz/redirect.aspx?pid=6189&bid=1708"></iframe>
+</div>
+
+<script>
+  // Função para gerar um tabuleiro com até 5 estrelas aleatórias
+  function generateBoard() {
+    const boardElement = document.getElementById('board');
+    boardElement.innerHTML = '';
+
+    const emojis = ['⭐', '🟦']; // Estrela e Quadrado Azul
+    const totalCells = 25;
+    const maxStars = 5;
+
+    // Gerar um array com sinais aleatórios, limitando a 5 estrelas
+    let cells = [];
+    let starsCount = 0;
+    for (let i = 0; i < totalCells; i++) {
+      if (starsCount < maxStars && Math.random() < 0.2) { // Aproximadamente 20% de chance de ser uma estrela
+        cells.push('⭐');
+        starsCount++;
+      } else {
+        cells.push('🟦');
+      }
+    }
+
+    // Embaralhar o array de células
+    cells.sort(() => Math.random() - 0.5);
+
+    // Adicionar células ao tabuleiro
+    for (let i = 0; i < totalCells; i++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      cell.innerText = cells[i];
+      boardElement.appendChild(cell);
+    }
+
+    // Gerar recomendações de apostas aleatórias
+    const apostas = ['300MT', '400MT', '800MT', '750MT', '50MT', '100MT', '260MT', '700MT', '150MT', '1000MT'];
+    const apostasRecomendadasElement = document.getElementById('apostas-recomendadas');
+    const randomIndex = Math.floor(Math.random() * apostas.length);
+    apostasRecomendadasElement.textContent = `Recomendação de Aposta: ${apostas[randomIndex]}`;
+
+    // Atualizar o contador de tentativas realizadas
+    let tryCountElement = document.getElementById('try-info');
+    tryCountElement.textContent = `Tentativas realizadas: ${Number(tryCountElement.textContent.split(':')[1].trim()) + 1}`;
+  }
+
+  // Função para rolar a página para baixo
+  function scrollDown() {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: 'smooth'
+    });
+  }
+</script>
+</body>
+</html>
